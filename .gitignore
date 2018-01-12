@@ -6,6 +6,6 @@
 /version.txt
 /myformer.phar
 /*.sql
-/.myform.json
+/myform.json
 
 /vendor/
