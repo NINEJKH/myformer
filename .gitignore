@@ -1,0 +1,11 @@
+/.buildpath
+/.project
+/.settings/
+
+/test.php
+/version.txt
+/myformer.phar
+/*.sql
+/myform.json
+
+/vendor/
