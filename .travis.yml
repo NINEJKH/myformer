@@ -1,0 +1,21 @@
+language: php
+
+matrix:
+  include:
+    - php: 7.2
+    - php: 7.1
+      env: DEPLOY=true
+
+sudo: false
+
+script: "./build.sh"
+
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: g06Ldu5Wnw+eAyt+fnvNuSgwGA0+zlMzDoZ5/IluGZJP8wHeRA1pXOG72qjfdbs2Q2pOO14lGet0fCatfyqkD13IRg3INe8cQUCWha/en3vHglKmeKRLqxv/T1qaW2/m4IVA9k3EQ5ygqkEXlvr9z177wtunHRBXFFt1Lz1AQ2V71cAMACObYLZAZ+695YYyDGqrqwV5hJZCkPQm89nDYTI0qM3QlNqjpWYh+IrwJWn8f4MtERN2VqBrDux3otC1giozpvfeE7AOnqMQFtCmLieWYUlnvt+QcttWIxcF9lvmluvBiIObp56iXuVDu0Lsn+OFGRwXYHvZ238vob2hc8EzGDiHW8V6BQpAh49a828BUSrUfKrKV4UdYcVH1uxjJiOn6kFj9Jn2xxIua8YnXO+w2/4LUeZnW0YWuiGzXjJf09c5PMbUpQgKQ9YQjDrzXCgVh1QHkt7HxffFE3m74Tcb5wuru6F11oKuOWSengxLVqcdkIabPfRZi/i/orPG4VF7qPL6hL2IoIdC7W2blUzZbFn5VirhFVoDMbes7/S8yLKgQwFl4VUIxzCtjmBblNAwRjNH0LUH4aIhC2KuhDR1d/t6RaAsnLkVHVsrbVcSBoh7VcUa2IsF+z3PFzYqaJfSl5xAlqu38LTuiEO2zJu3PSBCpJfnU6tCTuu8myA=
+  file: myformer.phar
+  on:
+    tags: true
+    condition: $DEPLOY = true

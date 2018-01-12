@@ -1,0 +1,13 @@
+{
+    "subscriber": {
+        "username": {
+            "Tel": null
+        },
+        "mobile_number": {
+            "Ref": "username"
+        },
+        "email": {
+            "Email": "bofh+%s@wigroup.rocks"
+        }
+    }
+}
