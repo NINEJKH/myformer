@@ -3,12 +3,13 @@
 namespace App\Transformer;
 
 use Exception;
-use PhpMyAdmin\SqlParser\Parser;
-use PhpMyAdmin\SqlParser\Statements\InsertStatement;
+use MyFormer\Parser\Insert as InsertParser;
 
 class Transform
 {
     protected $mappings = [];
+
+    protected $transformers = [];
 
     public function __construct(array $mappings)
     {
@@ -28,31 +29,35 @@ class Transform
         }
 
         try {
-            $parser = new Parser($row);
+            $insert = new InsertParser($row);
         } catch(Exception $e) {
             return $row;
         }
 
-        $insert = $parser->statements[0];
         $mappings = $this->mappings[$table];
 
-        $new_values = $this->map($insert, $mappings);
+        $new_values = $this->map(array_combine($insert->columns, $insert->values), $mappings);
 
-        $insert->values[0] = new \PhpMyAdmin\SqlParser\Components\ArrayObj(array_values($new_values));
-
-        return $insert->build();
+        return sprintf(
+            'INSERT INTO `%s` (`%s`) VALUES (%s);',
+            $table,
+            implode('`, `', array_keys($new_values)),
+            implode(', ', array_values($new_values))
+        );
     }
 
-    protected function map(InsertStatement $insert, array $mappings)
+    protected function map(array $values, array $mappings)
     {
-        $values = array_combine($insert->into->columns, $insert->values[0]->raw);
-
         foreach ($mappings as $column => $rule) {
-            $class_name = 'App\\Transformer\\Transformers\\' . key($rule);
-            $transformer = new $class_name;
-            $transformer->setParam(current($rule));
-            $values[$column] = $transformer->transform($values, $column);
-            unset($transformer);
+            $rule_name = key($rule);
+
+            if (!isset($this->transformers[$rule_name])) {
+                $class_name = 'App\\Transformer\\Transformers\\' . $rule_name;
+                $this->transformers[$rule_name] = new $class_name;
+                $this->transformers[$rule_name]->setParam(current($rule));
+            }
+
+            $values[$column] = $this->transformers[$rule_name]->transform($values, $column);
         }
 
         return $values;
