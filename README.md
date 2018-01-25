@@ -21,7 +21,6 @@ $ mysqldump \
   --verbose \
   --compress \
   --complete-insert \
-  --skip-extended-insert \
   --no-create-info \
   --quick \
   --hex-blob \

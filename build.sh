@@ -24,6 +24,11 @@ composer install \
   --quiet \
   --verbose
 
+# run tests
+if ! vendor/bin/phpunit; then
+  exit 1
+fi
+
 consolelog "composer cleanup"
 composer install \
   --no-dev \
