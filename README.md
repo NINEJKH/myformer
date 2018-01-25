@@ -2,6 +2,12 @@
 
 # myformer
 
+## Installation
+
+```bash
+$ curl -#fL "$(curl -s https://api.github.com/repos/NINEJKH/myformer/releases/latest | grep 'browser_download_url' | sed -n 's/.*"\(http.*\)".*/\1/p')" | sudo tee /usr/local/bin/myformer > /dev/null && sudo chmod +x /usr/local/bin/myformer
+```
+
 ## Example
 
 create structure dump
