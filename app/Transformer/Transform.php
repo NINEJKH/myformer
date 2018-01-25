@@ -72,7 +72,7 @@ class Transform
 
             foreach ($values as $n => $value_group) {
                 $column_n = $columns_n[$column];
-                $values[$n][$column_n] = $this->transformers[$rule_name]->transform($value_group, $column_n);
+                $values[$n][$column_n] = $this->transformers[$rule_name]->transform($columns_n, $value_group, $column_n);
             }
 
         }
