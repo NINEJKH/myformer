@@ -22,9 +22,8 @@ if (file_exists(__DIR__ . '/version.txt')) {
     $version = 'dev';
 }
 
-$transform_command = new TransformCommand;
-
 $app = new Application('myformer', $version);
-$app->add($transform_command);
-$app->setDefaultCommand($transform_command->getName());
+
+$app->add(new TransformCommand);
+
 $app->run();
