@@ -2,7 +2,7 @@
 
 namespace App\Transformer\Transformers;
 
-abstract class Transformer
+abstract class Transformer implements TransformerInterface
 {
     protected $param;
 
