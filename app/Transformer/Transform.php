@@ -36,18 +36,31 @@ class Transform
 
         $mappings = $this->mappings[$table];
 
-        $new_values = $this->map(array_combine($insert->columns, $insert->values), $mappings);
+        $new_values = $this->map($insert->columns, $insert->values, $mappings);
+
+        return $this->build($table, $insert->columns, $new_values);
+    }
+
+    protected function build($table, array $columns, array $values)
+    {
+        $joined_values = [];
+
+        foreach ($values as $value_group) {
+            $joined_values[] = '(' . implode(',', $value_group) . ')';
+        }
 
         return sprintf(
-            'INSERT INTO `%s` (`%s`) VALUES (%s);',
+            'INSERT INTO `%s` (`%s`) VALUES %s;',
             $table,
-            implode('`, `', array_keys($new_values)),
-            implode(', ', array_values($new_values))
+            implode('`,`', $columns),
+            implode(',', $joined_values)
         );
     }
 
-    protected function map(array $values, array $mappings)
+    protected function map(array $columns, array $values, array $mappings)
     {
+        $columns_n = array_flip($columns);
+
         foreach ($mappings as $column => $rule) {
             $rule_name = key($rule);
 
@@ -57,7 +70,11 @@ class Transform
                 $this->transformers[$rule_name]->setParam(current($rule));
             }
 
-            $values[$column] = $this->transformers[$rule_name]->transform($values, $column);
+            foreach ($values as $n => $value_group) {
+                $column_n = $columns_n[$column];
+                $values[$n][$column_n] = $this->transformers[$rule_name]->transform($value_group, $column_n);
+            }
+
         }
 
         return $values;
