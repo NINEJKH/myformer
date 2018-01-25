@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/NINEJKH/myformer.svg?branch=master)](https://travis-ci.org/NINEJKH/myformer)
+
 # myformer
 
 ## Example
@@ -21,7 +23,6 @@ $ mysqldump \
   --verbose \
   --compress \
   --complete-insert \
-  --skip-extended-insert \
   --no-create-info \
   --quick \
   --hex-blob \
