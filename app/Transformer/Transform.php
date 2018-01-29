@@ -60,23 +60,51 @@ class Transform
     protected function map(array $columns, array $values, array $mappings)
     {
         $columns_n = array_flip($columns);
+        $ruleset = new RuleSet($mappings);
 
-        foreach ($mappings as $column => $rule) {
-            $rule_name = key($rule);
-
-            if (!isset($this->transformers[$rule_name])) {
-                $class_name = 'App\\Transformer\\Transformers\\' . $rule_name;
-                $this->transformers[$rule_name] = new $class_name;
-                $this->transformers[$rule_name]->setParam(current($rule));
-            }
-
-            foreach ($values as $n => $value_group) {
-                $column_n = $columns_n[$column];
-                $values[$n][$column_n] = $this->transformers[$rule_name]->transform($columns_n, $value_group, $column_n);
-            }
-
+        foreach ($ruleset as $rule) {
+            $this->transformValues($rule, $columns_n, $values);
         }
 
         return $values;
+    }
+
+    protected function transformValues($rule, array $columns_n, array &$values)
+    {
+        foreach ($values as $n => $value_group) {
+            $transformer = null;
+
+            if (is_array($rule)) {
+                foreach ($rule as $each) {
+                    if ($each->condition === null || $each->condition->evaluate($values[$n][$columns_n[$each->column]])) {
+                        $column_n = $columns_n[$each->column];
+                        $transformer = $this->getTransformer($each);
+                        break;
+                    }
+                }
+
+                if (!$transformer) {
+                    continue;
+                }
+
+            } else {
+                $transformer = $this->getTransformer($rule);
+                $column_n = $columns_n[$rule->column];
+            }
+
+
+            $values[$n][$column_n] = $transformer->transform($columns_n, $value_group, $column_n);
+        }
+    }
+
+    protected function getTransformer(Rule $rule)
+    {
+        if (!isset($this->transformers[$rule->name])) {
+            $class_name = 'App\\Transformer\\Transformers\\' . $rule->name;
+            $this->transformers[$rule->name] = new $class_name;
+            $this->transformers[$rule->name]->setParam($rule->param);
+        }
+
+        return $this->transformers[$rule->name];
     }
 }
