@@ -10,7 +10,7 @@ $ curl -#fL "$(curl -s https://api.github.com/repos/NINEJKH/myformer/releases/la
 
 ## Example
 
-create structure dump
+### create structure dump
 
 ```bash
 $ mysqldump \
@@ -22,7 +22,7 @@ $ mysqldump \
   > database_structure.sql
 ```
 
-create data dump
+### create data dump
 
 ```bash
 $ mysqldump \
@@ -36,24 +36,24 @@ $ mysqldump \
   > database_data.sql
 ```
 
-create config
+### create config
 
 ```bash
 $ cat <<'EOF' > .myform.json
 {
     "table_name": [{
             "columnA": {
-                "Tel": []
+                "Tel": null
             } 
         },
         {
             "columnB": {
-                "Email": []
+                "Email": "qa+%s@company.com"
             }
         },
         {
             "columnC": {
-                "Replace": ["foo", "bar"]
+                "Set": "static content"
             }
         }
     ]
@@ -61,8 +61,34 @@ $ cat <<'EOF' > .myform.json
 EOF
 ```
 
-anonymise data
+### anonymise data
 
 ```bash
-$ myformer
+$ myformer transform *_data.sql
 ```
+
+This will create a file with the same name + postfixed with "+transformed".
+
+## Rules
+
+### Email
+
+Anonymise Email addresses.
+
+Accepts a string parameter, `%s` will be replaced with the first 16 chars
+of the md5 hash of the original value. 
+
+### Ref
+
+Set column value from another column value.
+
+Accepts a string parameter, which will be used as column name of the
+source value.
+
+### Set
+
+Statically set the value of the string parameter
+
+### Tel
+
+Random telphone-like number (999 + 10-digits)
