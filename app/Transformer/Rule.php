@@ -4,6 +4,8 @@ namespace App\Transformer;
 
 class Rule
 {
+    public $table;
+
     public $column;
 
     public $name;
@@ -12,11 +14,19 @@ class Rule
 
     public $condition;
 
-    public function __construct($column, array $rule)
+    public $transformer;
+
+    public $persistentKey;
+
+    public function __construct($table, $column, array $rule)
     {
+        $this->table = $table;
+
         $this->column = $column;
 
         $this->extractNameAndParam($rule);
+
+        $this->getTransformer();
     }
 
     protected function extractNameAndParam(array $rule)
@@ -36,8 +46,21 @@ class Rule
                 unset($rule['Condition']);
             }
 
+            if (isset($rule['PersistentKey'])) {
+                $this->persistentKey = $rule['PersistentKey'];
+                unset($rule['PersistentKey']);
+            }
+
             $this->name = key($rule);
             $this->param = current($rule);
         }
+    }
+
+    protected function getTransformer()
+    {
+        $class_name = 'App\\Transformer\\Transformers\\' . $this->name;
+        $this->transformer = new $class_name;
+        $this->transformer->setPersistentKey($this->persistentKey);
+        $this->transformer->setParam($this->param);
     }
 }

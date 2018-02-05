@@ -6,14 +6,17 @@ use Iterator;
 
 class RuleSet implements Iterator
 {
+    protected $table;
+
     protected $rules = [];
 
-    protected $column = [];
+    protected $columns = [];
 
     protected $pos;
 
-    public function __construct(array $rules)
+    public function __construct($table, array $rules)
     {
+        $this->table = $table;
         $this->rules = $rules;
         $this->columns = array_keys($rules);
         $this->pos = 0;
@@ -38,12 +41,12 @@ class RuleSet implements Iterator
             $rules = [];
 
             foreach($rule as $each) {
-                $rules[] = new Rule($column, $each);
+                $rules[] = new Rule($this->table, $column, $each);
             }
 
             return $rules;
         } else {
-            return new Rule($column, $rule);
+            return new Rule($this->table, $column, $rule);
         }
     }
 
