@@ -8,9 +8,6 @@ class Tel extends Transformer
 
     public function transform(array $columns_n, array $values, $column)
     {
-        if (!empty($this->param)) {
-            $prefix = 0;
-        }
         return $this->replaceValue($values[$column], sprintf('%s999%d', $this->prefix, rand(1000000000, 9999999999)));
     }
 
