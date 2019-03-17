@@ -31,17 +31,17 @@ deploy:
     skip_cleanup: true
 
   - provider: script
-      script: "./push.sh"
-      on:
-        branch: master
-        condition: $DEPLOY = true
-      skip_cleanup: true
+    script: "./push.sh"
+    on:
+      branch: master
+      condition: $DEPLOY = true
+    skip_cleanup: true
 
-    - provider: script
-      script: "./push.sh"
-      on:
-        tags: true
-        condition: $DEPLOY = true
-      skip_cleanup: true
+  - provider: script
+    script: "./push.sh"
+    on:
+      tags: true
+      condition: $DEPLOY = true
+    skip_cleanup: true
 
 script: "./build.sh"
