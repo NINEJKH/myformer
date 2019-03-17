@@ -3,6 +3,7 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', true);
+ini_set('phar.readonly', false);
 
 $pharFile = $_SERVER['argv'][1];
 
