@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-__DIR__="$(dirname "$("${READLINK_PATH:-readlink}" -f "$0")")"
+readlink_bin="${READLINK_PATH:-readlink}"
+if ! "${readlink_bin}" -f test &> /dev/null; then
+  __DIR__="$(dirname "$(python -c "import os,sys; print(os.path.realpath(os.path.expanduser(sys.argv[1])))" "${0}")")"
+else
+  __DIR__="$(dirname "$("${readlink_bin}" -f "${0}")")"
+fi
 
 # required libs
 source "${__DIR__}/.bash/functions.shlib"
@@ -13,6 +18,10 @@ if [[ ! -z "${TRAVIS_TAG}" ]]; then
   echo "${TRAVIS_TAG}" > version.txt
 elif [[ ! -z "${TRAVIS_COMMIT}" ]]; then
   echo "${TRAVIS_COMMIT}" > version.txt
+fi
+
+if [[ -z "${DOCKER_REPO}" ]]; then
+  DOCKER_REPO="$(basename "${__DIR__}")"
 fi
 
 # composer
@@ -45,3 +54,6 @@ php create-phar.php myformer.phar
 chmod +x myformer.phar
 
 ./myformer.phar --version
+
+# build docker container
+docker build --pull -t "${DOCKER_REPO}:latest" .

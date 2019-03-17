@@ -1,21 +1,47 @@
+sudo: required
+
 language: php
+
+services:
+  - docker
+
+env:
+  global:
+    - DOCKER_REPO: 9jkh/myformer
+    # DOCKER_USERNAME
+    - secure: "j2iKjHb9+afKpvMA0KCIB3RPu5/niYuf8YHIPr2snaIJ8sstMBrrMaP4krEAlpgbeWa0tar8gu6vCmfovwi6cPqWEYYCK1dmXqSk7tL7fY0A74ku3TRfXTfIItAoI+pTnbVvJHpip/BLezN4745C3Yt3DCke0lptg8z4IsLBV6X51Ow6PdtVjfPOoKhoAmoejiwf484FuvKrvLWKlghuzKruFVzfvFmJv1C2ZIhsg1jnzcRbF2vryP2txcKmrFNFnOulf1v0AFeBKKh6oCEAYRYJ+S6t/hmsFDAIVqcqZ+EJp4sXteyUB70J1Yha49Jh5RD1AeeKm53WpOfTCbB8AhkcU9yZk3SNzzfFaIWD334M7vnBFVZuXXLwEQtRSrO8ALyMvRHtayD3BqgzH7Xi/Q4YIx+z/0nC9KQSKOXNKIaaDQ9qSNDUpvmfmWdLnSd3NSAjG5Y05B8IoQxCSdLm8K2290FFA2dExMeXsE6+0Fx0er13ZxFcQMpfgYaI4SzUBU9G14ThyB6rWT4vxJ600+IzwlKDf+QRdki8ns2k+aJcRzQlt7WDHA8SK0b/b7/I4XvKCEsC/eo/l3mLZ6T0VNxLHUp9uo1YgFCyor49X6Bqp5YDuDq2eSL0XImLnHJ9zrEl8x8t87gO9u9ztRCbCGd4wfdmJZVn+dru59rwihE="
+    # DOCKER_PASSWORD
+    - secure: "gB+YZOVm1zlUtnLcsdbJTGfKSKRW5O9jY7ms7pA5TlNM/5tai1h9gxMZJG5dtLQMufRPOauV7PwG5zE05OobTPtCIkHpusky+sX0ym6+OwcVcZ0KOFRGlhfZ5WZYG5rMID95YGZUvri9VuDwFl8MHgSobdmnMXgoN8ODxGXi2OG/o5vQlgWPWAeAuqGT1J1o+ShHRo/uC2U9v2wWqIzStwgc34MNPabZ5NoScckH0/jZfOB/ery8iCUT+yWVK0XU54QWWH1i8AvN58GvxKP2W/HsPXmJlxm/4HrQBwc67dJyhoJd1GRRY3gqf0fbJV5xekIRsEObOOe7RQBoAT81CaDnMSC9fwyhvisU1YB1icbyyRwdngUtJh3Q9BWf5U5GxUbC0XLSXhtsGgQrrDhwEKmQaxD6l1YW4Ka12idfS0bFMydUgkOxUJA6zDwMJfFbQNL//4gBHWs+AaAXjxfS4IaLgQb6N2L0jt3KlXOuvzcoMVEnHd13Ppbxsd6ara3S/ggcFVA4cgOqEGlzgaihbtfVzVME4tlWg/H0csNr8VusqCnXHSBKWCyixTw0fsyoyWiVoWjAEhzPzem2VjCk2QV7rndEHIXGRJpjkn8dliwdUBtPoTAhp0vkO4cC+szPrMiXK5eGWTAenorpHm24kCD3Sfl3qWdWUHW9VxO9P5U="
 
 matrix:
   include:
+    - php: 7.3
     - php: 7.2
-    - php: 7.1
       env: DEPLOY=true
-
-sudo: false
-
-script: "./build.sh"
+    - php: 7.1
 
 deploy:
-  skip_cleanup: true
-  provider: releases
-  api_key:
-    secure: g06Ldu5Wnw+eAyt+fnvNuSgwGA0+zlMzDoZ5/IluGZJP8wHeRA1pXOG72qjfdbs2Q2pOO14lGet0fCatfyqkD13IRg3INe8cQUCWha/en3vHglKmeKRLqxv/T1qaW2/m4IVA9k3EQ5ygqkEXlvr9z177wtunHRBXFFt1Lz1AQ2V71cAMACObYLZAZ+695YYyDGqrqwV5hJZCkPQm89nDYTI0qM3QlNqjpWYh+IrwJWn8f4MtERN2VqBrDux3otC1giozpvfeE7AOnqMQFtCmLieWYUlnvt+QcttWIxcF9lvmluvBiIObp56iXuVDu0Lsn+OFGRwXYHvZ238vob2hc8EzGDiHW8V6BQpAh49a828BUSrUfKrKV4UdYcVH1uxjJiOn6kFj9Jn2xxIua8YnXO+w2/4LUeZnW0YWuiGzXjJf09c5PMbUpQgKQ9YQjDrzXCgVh1QHkt7HxffFE3m74Tcb5wuru6F11oKuOWSengxLVqcdkIabPfRZi/i/orPG4VF7qPL6hL2IoIdC7W2blUzZbFn5VirhFVoDMbes7/S8yLKgQwFl4VUIxzCtjmBblNAwRjNH0LUH4aIhC2KuhDR1d/t6RaAsnLkVHVsrbVcSBoh7VcUa2IsF+z3PFzYqaJfSl5xAlqu38LTuiEO2zJu3PSBCpJfnU6tCTuu8myA=
-  file: myformer.phar
-  on:
-    tags: true
-    condition: $DEPLOY = true
+  - provider: releases
+    api_key:
+      secure: 3WmVaUX57bQNnkAyLuov+glMJTupvGR3PhpENgTSnwIaRmZhu/zZHnaif90Uo8QCq47U6NGT5XrSvd98tWInVgaMZhj+SC9X8UdfVzmqHxl8Vlog0ErBuoyI3tkAx9yPYIE8aKX9sLM3qcDzdANdoXpRA2D87hGZRqINpxi0Yi9pcJCu2Arir87gMYxs3p4s/oeIlTc3I37t9St7FCYDEg6tIVLf3jGtSRzOybFCToFaiEpYomg1oJu4g7qFIdFU+MUXQEsnmU3Fx4GKzftKYejLq+QTyxSkIAD+i3cUAh1yZSaxidzt+KYManvEEQXhWSJf4ooH3fSVOpqjm1Z4ZJ5h4RhdVeCm4Czx1ftaLuZrEzoeMvUygkUihpXObIzTRM+LX3aUx7ruQ6liiU4Ls1MirqtZIXTMVyR8bI5loIWoExGrOkq9Jj31W7Xv2Z3a7WY/R2doDh5NbI7cA75GrVdzHlKwlXvLNFaHBvi3hpBYmavhyJ1RHlHe/N5UaESGFNTxfYMdxQt55v4CxUKGeefdOtKFCYTAGLleVCZspQKpigU4hY1/E7PYwWVbSicnIGqbF0UNhK5wZW6NipkuMM5I8TfYu8tQhXYINdNB6ZdDa1ptH6MKuZ4rUZ+yMI/vz17NlhMU5r2ZlwyramPdPpbva53xQFAKVUiHS4pW/ms=
+    file: myformer.phar
+    on:
+      tags: true
+      condition: $DEPLOY = true
+    skip_cleanup: true
+
+  - provider: script
+    script: "./push.sh"
+    on:
+      branch: master
+      condition: $DEPLOY = true
+    skip_cleanup: true
+
+  - provider: script
+    script: "./push.sh"
+    on:
+      tags: true
+      condition: $DEPLOY = true
+    skip_cleanup: true
+
+script: "./build.sh"
