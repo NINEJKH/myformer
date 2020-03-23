@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/NINEJKH/myformer.svg?branch=master)](https://travis-ci.org/NINEJKH/myformer)
-
 # myformer
+
+[![Build Status](https://travis-ci.com/NINEJKH/myformer.svg?branch=master)](https://travis-ci.com/NINEJKH/myformer)
 
 ## Installation
 
@@ -39,24 +39,19 @@ $ mysqldump \
 ### create config
 
 ```bash
-$ cat <<'EOF' > .myform.json
+$ cat <<'EOF' > ./myform.json
 {
-    "table_name": [{
-            "columnA": {
-                "Tel": null
-            } 
-        },
-        {
-            "columnB": {
-                "Email": "qa+%s@company.com"
-            }
-        },
-        {
-            "columnC": {
-                "Set": "static content"
-            }
-        }
-    ]
+  "table_name": {
+    "columnA": {
+      "Tel": null
+    },
+    "columnB": {
+      "Email": "qa+%s@company.com"
+    },
+    "columnC": {
+      "Set": "static content"
+    }
+  }
 }
 EOF
 ```
@@ -64,7 +59,13 @@ EOF
 ### anonymise data
 
 ```bash
-$ myformer transform *_data.sql
+myformer transform foobar_data.sql
+```
+
+or via docker:
+
+```bash
+docker run -it --rm -v "${PWD}:/dumps" 9jkh/myformer transform foobar_data.sql
 ```
 
 This will create a file with the same name + postfixed with "+transformed".
