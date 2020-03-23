@@ -1,6 +1,6 @@
 # myformer
 
-[![Build Status](https://travis-ci.org/NINEJKH/myformer.svg?branch=master)](https://travis-ci.org/NINEJKH/myformer)
+[![Build Status](https://travis-ci.com/NINEJKH/myformer.svg?branch=master)](https://travis-ci.com/NINEJKH/myformer)
 
 ## Installation
 
