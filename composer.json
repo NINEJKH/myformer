@@ -9,8 +9,13 @@
             "email": "hello@9jkh.co.za"
         }
     ],
+    "config": {
+        "platform": {
+            "php": "7.3.16"
+        }
+    },
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=7.3.0",
         "symfony/console": "^4.0"
     },
     "autoload": {
